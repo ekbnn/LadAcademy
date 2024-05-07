@@ -1,0 +1,17 @@
+.product {
+    display: flex;
+
+    &__img {
+        border-radius: 20%;
+        box-shadow: 0 0 5px;
+        height: 30px;
+        margin-left: 10px;
+    }
+
+    &__imgPosition {
+        border-radius: 20%;
+        box-shadow: 0 0 5px;
+        height: 300px;
+    }
+
+}
