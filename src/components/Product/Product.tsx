@@ -8,7 +8,7 @@ const Product = () => {
         price: 8165,
         discount: 90,
         rating: 4.7,
-        isFavorite: false
+        isFavorite: true
     };
 
     return (
