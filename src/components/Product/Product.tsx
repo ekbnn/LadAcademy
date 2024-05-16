@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import classes from './Product.module.scss';
 import { Position } from '../../types/position';
+import MyButton from '../MyButton/MyButton';
 
 interface PositionProps {
   position: Position;
@@ -8,22 +9,32 @@ interface PositionProps {
 
 const Product: FC<PositionProps> = (props) => {
   const { position } = props;
+  const handleClickBuy = () => {
+    alert('Товар добавлен в корзину');
+  };
   return (
+    // Карточка товара
     <div className={classes.product}>
-      <img
-        className={classes.product__imgPosition}
-        src={position.imageUrl}
-        alt="dissconnect"
-      />
-      <div>
-        <span>{position.name}</span>
-        <ul>
-          <li>id: {position.id}</li>
-          <li>Цена: {position.price} ₽</li>
-          <li>Скидка: {position.discount}%</li>
-          <li>Рейтинг: {position.rating}</li>
-          <li>
-            Избранное:
+      {/* Изрбражение товара */}
+      <div className={classes.product__top}>
+        <img
+          className={classes.product__imgPosition}
+          src={position.imageUrl}
+          alt="dissconnect"
+        />
+        <div className={classes.product__discount}>-{position.discount} %</div>
+      </div>
+      {/* Информация о товаре */}
+      <div className={classes.product__property}>
+        {/* Информация о цене */}
+        <div className={classes.product__prices}>
+          <div>
+            <div className={classes.product__rating}>
+              Рейтинг: {position.rating}
+            </div>
+            <div className={classes.product__cost}>{position.price} ₽</div>
+          </div>
+          <div className={classes.product__pricesImg}>
             {position.isFavorite ? (
               <img
                 className={classes.product__img}
@@ -37,8 +48,20 @@ const Product: FC<PositionProps> = (props) => {
                 alt="like"
               />
             )}
-          </li>
-        </ul>
+          </div>
+        </div>
+        {/* Название продукта */}
+        <div>
+          <a href="#" className={classes.product__name}>
+            {position.name}
+          </a>
+        </div>
+        {/* Кнопка покупки */}
+        <div>
+          <MyButton onClickaAtion={handleClickBuy} color="green">
+            Купить
+          </MyButton>
+        </div>
       </div>
     </div>
   );

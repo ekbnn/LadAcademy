@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import Product from '../Product/Product';
-import Row from '../Row/Row';
 import { Position } from '../../types/position';
 
 interface ProductCatalogProps {
@@ -9,11 +8,11 @@ interface ProductCatalogProps {
 
 const ProductCatalog: FC<ProductCatalogProps> = ({ products }) => {
   return (
-    <Row>
+    <>
       {products.map((product) => (
-        <Product position={product} />
+        <Product key={product.id} position={product} />
       ))}
-    </Row>
+    </>
   );
 };
 
