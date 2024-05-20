@@ -3,6 +3,7 @@ import classes from './Row.module.scss';
 
 interface RowProps {
   children: ReactNode; //Тип описаный ранее для использования любого props
+  // direction: 'row' | 'column';
 }
 const Row: FC<RowProps> = ({ children }) => {
   return <div className={classes.page}>{children}</div>;

@@ -1,17 +1,99 @@
-import { FC } from 'react';
+import { FC, useState, Dispatch, SetStateAction } from 'react';
 import classes from './Product.module.scss';
 import { Position } from '../../types/position';
 import MyButton from '../MyButton/MyButton';
+import ChangeCount from '../ChangeCount/ChangeCount';
+import { CartType } from '../../types/cart';
 
 interface PositionProps {
   position: Position;
+  onSetCartProducts: Dispatch<SetStateAction<CartType>>;
+  cartProducts: CartType;
 }
 
 const Product: FC<PositionProps> = (props) => {
-  const { position } = props;
-  const handleClickBuy = () => {
-    alert('Товар добавлен в корзину');
+  const { position, onSetCartProducts, cartProducts, handleCartCount } = props;
+  // const handleClickBuy = () => {
+  //   alert('Товар добавлен в корзину');
+  // };
+
+  //Кол-во товара в корзине
+
+  const [count, setCount] = useState(0);
+  //handleCartCount(setCount);
+  const handleClickUp = () => {
+    let countNext = count;
+    setCount((countNext = count + 1));
+
+    // if (countNext > 0) {
+    //   countNext == 1 &&
+    //     onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
+    //   cartProducts.forEach((el) => {
+    //     if (el.id == position.id) {
+    //       el.count = countNext;
+    //       onSetCartProducts([...cartProducts]);
+    //     } else {
+    //       onSetCartProducts([
+    //         ...cartProducts,
+    //         { ...position, count: countNext },
+    //       ]);
+    //     }
+    //   });
+    // }
+
+    if (countNext > 0) {
+      if (cartProducts.find((el) => el.id == position.id)) {
+        cartProducts.find((el) => {
+          if (el.id == position.id) {
+            el.count = countNext;
+          }
+        });
+        onSetCartProducts([...cartProducts]);
+      } else {
+        onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
+      }
+    }
   };
+
+  const handleClickDown = () => {
+    let countNext = count;
+    setCount((countNext = count - 1));
+    // if (countNext > 0) {
+    //   countNext == 1 &&
+    //     onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
+    //   cartProducts.forEach((el) => {
+    //     if (el.id == position.id) {
+    //       el.count = countNext;
+    //       onSetCartProducts([...cartProducts]);
+    //     } else {
+    //       onSetCartProducts([
+    //         ...cartProducts,
+    //         { ...position, count: countNext },
+    //       ]);
+    //     }
+    //   });
+    // }
+
+    if (countNext > 0) {
+      if (cartProducts.find((el) => el.id == position.id)) {
+        cartProducts.find((el) => {
+          if (el.id == position.id) {
+            el.count = countNext;
+          }
+        });
+        onSetCartProducts([...cartProducts]);
+      } else {
+        onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
+      }
+    }
+  };
+
+  //Изменение избранного
+  const [like, setLike] = useState(false);
+  const handleLike = () => {
+    setLike(!like);
+  };
+
   return (
     // Карточка товара
     <div className={classes.product}>
@@ -34,15 +116,18 @@ const Product: FC<PositionProps> = (props) => {
             </div>
             <div className={classes.product__cost}>{position.price} ₽</div>
           </div>
+          {/* картинка избранного */}
           <div className={classes.product__pricesImg}>
-            {position.isFavorite ? (
+            {like ? (
               <img
+                onClick={handleLike}
                 className={classes.product__img}
                 src="/like.svg"
                 alt="like"
               />
             ) : (
               <img
+                onClick={handleLike}
                 className={classes.product__img}
                 src="/unLike.svg"
                 alt="like"
@@ -58,9 +143,18 @@ const Product: FC<PositionProps> = (props) => {
         </div>
         {/* Кнопка покупки */}
         <div>
-          <MyButton onClickaAtion={handleClickBuy} color="green">
-            Купить
-          </MyButton>
+          {count > 0 ? (
+            <ChangeCount
+              count={count}
+              handleClickUp={handleClickUp}
+              handleClickDown={handleClickDown}
+            />
+          ) : (
+            <MyButton onClickaAtion={handleClickUp} color="green">
+              Купить
+            </MyButton>
+          )}
+          {/* <button onClick={handleClickUp}>купить</button> */}
         </div>
       </div>
     </div>

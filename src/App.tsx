@@ -1,10 +1,14 @@
 //import Product from './components/Product/Product.tsx';
 import Row from './components/Row/Row.tsx';
 import ProductCatalog from './components/ProductCatalog/ProductCatalog.tsx';
+import { Position } from './types/position.ts';
+import Cart from './components/Cart/Cart.tsx';
+import { CartType } from './types/cart.ts';
+import { useState } from 'react';
 //import MyButton from './components/MyButton/MyButton.tsx';
 
 function App() {
-  const positions = [
+  const positions: Position[] = [
     {
       id: 1,
       name: 'Наручные часы мужские SKMEI 1251',
@@ -46,6 +50,18 @@ function App() {
       isFavorite: true,
     },
   ];
+  const handleCartCount = (func) => {
+    return func;
+  };
+  //const cart: Position[] = []
+
+  const [cartProducts, setCartProducts] = useState<CartType>([]);
+  const [el, setEl] = useState(0);
+  console.log(el);
+
+  // const cart: Position[] = [
+
+  // ];
 
   // const products = [
   //   {
@@ -67,8 +83,14 @@ function App() {
   return (
     <>
       <Row>
-        <ProductCatalog products={positions} />
+        <ProductCatalog
+          products={positions}
+          onSetCartProducts={setCartProducts}
+          cartProducts={cartProducts}
+          handleCartCount={handleCartCount}
+        />
       </Row>
+      <Cart cartProducts={cartProducts} funcTest={setEl} />
       {/* <MyButton />
       <div
         onClick={() => alert('Клик на div')}

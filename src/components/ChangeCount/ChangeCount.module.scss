@@ -1,0 +1,38 @@
+.buttonCount {
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  transition: 0.2s;
+  margin-top: auto;
+
+  &__yellow {
+    color: #def31b;
+    border: 1px solid #def31b;
+  }
+
+  &__green {
+    color: #70c05b;
+    border: 1px solid #70c05b;
+  }
+
+  &__red {
+    color: #d91c1cde;
+    border: 1px solid #d91c1cde;
+  }
+
+  &:hover {
+    border: 1px solid #ff6633;
+    background-color: #ff6633;
+    color: #fff;
+  }
+
+}
+
+.buttonUpDown {
+  font-size: 17px;
+  width: 25%;
+  cursor: pointer;
+}
