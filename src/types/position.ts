@@ -6,7 +6,7 @@ export interface Position {
   discount: number;
   rating: number;
   isFavorite: boolean;
-  count: number;
+  //count: number;
 }
 
 // export type PositionType = {

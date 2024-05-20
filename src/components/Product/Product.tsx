@@ -12,34 +12,13 @@ interface PositionProps {
 }
 
 const Product: FC<PositionProps> = (props) => {
-  const { position, onSetCartProducts, cartProducts, handleCartCount } = props;
-  // const handleClickBuy = () => {
-  //   alert('Товар добавлен в корзину');
-  // };
+  const { position, onSetCartProducts, cartProducts } = props;
 
   //Кол-во товара в корзине
-
   const [count, setCount] = useState(0);
-  //handleCartCount(setCount);
   const handleClickUp = () => {
     let countNext = count;
     setCount((countNext = count + 1));
-
-    // if (countNext > 0) {
-    //   countNext == 1 &&
-    //     onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
-    //   cartProducts.forEach((el) => {
-    //     if (el.id == position.id) {
-    //       el.count = countNext;
-    //       onSetCartProducts([...cartProducts]);
-    //     } else {
-    //       onSetCartProducts([
-    //         ...cartProducts,
-    //         { ...position, count: countNext },
-    //       ]);
-    //     }
-    //   });
-    // }
 
     if (countNext > 0) {
       if (cartProducts.find((el) => el.id == position.id)) {
@@ -58,21 +37,6 @@ const Product: FC<PositionProps> = (props) => {
   const handleClickDown = () => {
     let countNext = count;
     setCount((countNext = count - 1));
-    // if (countNext > 0) {
-    //   countNext == 1 &&
-    //     onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
-    //   cartProducts.forEach((el) => {
-    //     if (el.id == position.id) {
-    //       el.count = countNext;
-    //       onSetCartProducts([...cartProducts]);
-    //     } else {
-    //       onSetCartProducts([
-    //         ...cartProducts,
-    //         { ...position, count: countNext },
-    //       ]);
-    //     }
-    //   });
-    // }
 
     if (countNext > 0) {
       if (cartProducts.find((el) => el.id == position.id)) {

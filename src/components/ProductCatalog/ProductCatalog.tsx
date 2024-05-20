@@ -13,7 +13,6 @@ const ProductCatalog: FC<ProductCatalogProps> = ({
   products,
   onSetCartProducts,
   cartProducts,
-  handleCartCount,
 }) => {
   return (
     <>
@@ -23,7 +22,6 @@ const ProductCatalog: FC<ProductCatalogProps> = ({
           position={product}
           onSetCartProducts={onSetCartProducts}
           cartProducts={cartProducts}
-          handleCartCount={handleCartCount}
         />
       ))}
     </>

@@ -1,0 +1,11 @@
+.all {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.right {
+  width: 25%;
+  height: 100%;
+  padding: 2%;
+}
