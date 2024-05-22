@@ -6,7 +6,6 @@ export interface Position {
   discount: number;
   rating: number;
   isFavorite: boolean;
-  //count: number;
 }
 
 // export type PositionType = {
@@ -19,6 +18,6 @@ export interface Position {
 //   isFavorite: boolean;
 // };
 
-export interface ProductItemInCart extends Position {
+export interface PositionCount extends Position {
   count: number;
 }

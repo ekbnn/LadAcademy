@@ -1,5 +1,5 @@
 import { FC, Dispatch, SetStateAction } from 'react';
-import Product from '../Product/Product';
+import Product from './Product/Product';
 import { Position } from '../../types/position';
 import { CartType } from '../../types/cart';
 
@@ -19,7 +19,7 @@ const ProductCatalog: FC<ProductCatalogProps> = ({
       {products.map((product) => (
         <Product
           key={product.id}
-          position={product}
+          position={{ ...product, count: 0 }}
           onSetCartProducts={onSetCartProducts}
           cartProducts={cartProducts}
         />

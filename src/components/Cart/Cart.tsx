@@ -1,56 +1,65 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { CartType } from '../../types/cart';
-import ChangeCount from '../ChangeCount/ChangeCount';
+import classes from './Cart.module.scss';
 
 interface CartProps {
   cartProducts: CartType;
+  onSetCartProducts: Dispatch<SetStateAction<CartType>>;
 }
 
-const Cart: FC<CartProps> = ({ cartProducts, funcTest }) => {
-  //console.log(handleCartCount);
-  //   const r = handleCartCount();
-  //   console.log(r);
-  const countTest = 2;
-
-  //const [count, setCount] = useState(0);
-  const handleClickUp = (elCart) => {
-    let countNext = elCart.count;
-    setCount((countNext = count + 1));
-
-    if (countNext > 0) {
-      if (cartProducts.find((el) => el.id == position.id)) {
-        cartProducts.find((el) => {
-          if (el.id == position.id) {
-            el.count = countNext;
-          }
-        });
-        onSetCartProducts([...cartProducts]);
-      } else {
-        onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
-      }
-    }
+const Cart: FC<CartProps> = ({ cartProducts, onSetCartProducts }) => {
+  //Увеличение товара в корзине
+  const handleClickUp = (id: number) => {
+    cartProducts.map((el) => el.id == id && (el.count = el.count + 1));
+    onSetCartProducts([...cartProducts]);
   };
+  //Уменьшение товара в корзине
+  const handleClickDown = (id: number) => {
+    cartProducts.map((el) => el.id == id && (el.count = el.count - 1));
+    onSetCartProducts([...cartProducts]);
+  };
+
+  //Итог корзина
+  let summPrice = 0;
+  cartProducts.map(
+    (product) => (summPrice = summPrice + product.count * product.price),
+  );
+
   return (
     <div>
       <h3>Корзина</h3>
-      <ul>
-        {cartProducts.map((product) => (
-          <li key={product.id}>
-            {product.name}
-            <ChangeCount
-              count={product.count}
-              // handleClickDown={}
-              // handleClickUp={}
-            />
-            <button onClick={() => funcTest([product.id, product.count])}>
-              -
-            </button>
-            {product.count}
-            <button>-</button>
-          </li>
-        ))}
-      </ul>
-      <div>Cevvf</div>
+
+      {cartProducts.map((product) => {
+        return (
+          product.count > 0 && (
+            <div key={product.id} className={classes.cart}>
+              <div className={classes.cart__name}>{product.name}</div>
+              <div className={classes.cart__priceCount}>
+                <div className={classes.cart__price}>{product.price} ₽</div>
+                <div className={classes.cart__count}>
+                  <button
+                    className={classes.cart__count__button}
+                    onClick={() => handleClickUp(product.id)}
+                  >
+                    +
+                  </button>
+                  <span>
+                    {cartProducts.find((el) => el.id == product.id)?.count}
+                  </span>
+                  <button
+                    className={classes.cart__count__button}
+                    onClick={() => handleClickDown(product.id)}
+                  >
+                    -
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
+        );
+      })}
+
+      <div>Итог: {summPrice} ₽</div>
     </div>
   );
 };

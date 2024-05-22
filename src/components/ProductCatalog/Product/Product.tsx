@@ -1,12 +1,12 @@
 import { FC, useState, Dispatch, SetStateAction } from 'react';
 import classes from './Product.module.scss';
-import { Position } from '../../types/position';
-import MyButton from '../MyButton/MyButton';
-import ChangeCount from '../ChangeCount/ChangeCount';
-import { CartType } from '../../types/cart';
+import { PositionCount } from '../../../types/position';
+import MyButton from './MyButton/MyButton';
+import ChangeCount from './ChangeCount/ChangeCount';
+import { CartType } from '../../../types/cart';
 
 interface PositionProps {
-  position: Position;
+  position: PositionCount;
   onSetCartProducts: Dispatch<SetStateAction<CartType>>;
   cartProducts: CartType;
 }
@@ -14,41 +14,32 @@ interface PositionProps {
 const Product: FC<PositionProps> = (props) => {
   const { position, onSetCartProducts, cartProducts } = props;
 
-  //Кол-во товара в корзине
-  const [count, setCount] = useState(0);
+  //Увеличение товара в корзине
   const handleClickUp = () => {
-    let countNext = count;
-    setCount((countNext = count + 1));
-
-    if (countNext > 0) {
-      if (cartProducts.find((el) => el.id == position.id)) {
-        cartProducts.find((el) => {
-          if (el.id == position.id) {
-            el.count = countNext;
-          }
-        });
-        onSetCartProducts([...cartProducts]);
-      } else {
-        onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
-      }
+    if (cartProducts.find((el) => el.id == position.id)) {
+      cartProducts.find((el) => {
+        if (el.id == position.id) {
+          el.count = el.count + 1;
+        }
+      });
+      onSetCartProducts([...cartProducts]);
+    } else {
+      onSetCartProducts([
+        ...cartProducts,
+        { ...position, count: position.count + 1 },
+      ]);
     }
   };
 
+  //Уменьшение товара в корзине
   const handleClickDown = () => {
-    let countNext = count;
-    setCount((countNext = count - 1));
-
-    if (countNext > 0) {
-      if (cartProducts.find((el) => el.id == position.id)) {
-        cartProducts.find((el) => {
-          if (el.id == position.id) {
-            el.count = countNext;
-          }
-        });
-        onSetCartProducts([...cartProducts]);
-      } else {
-        onSetCartProducts([...cartProducts, { ...position, count: countNext }]);
-      }
+    if (cartProducts.find((el) => el.id == position.id)) {
+      cartProducts.find((el) => {
+        if (el.id == position.id) {
+          el.count = el.count - 1;
+        }
+      });
+      onSetCartProducts([...cartProducts]);
     }
   };
 
@@ -107,18 +98,17 @@ const Product: FC<PositionProps> = (props) => {
         </div>
         {/* Кнопка покупки */}
         <div>
-          {count > 0 ? (
+          {cartProducts.find((el) => el.id == position.id)?.count ? (
             <ChangeCount
-              count={count}
-              handleClickUp={handleClickUp}
-              handleClickDown={handleClickDown}
+              count={cartProducts.find((el) => el.id == position.id)?.count}
+              onClickAtionUp={handleClickUp}
+              onClickAtionDown={handleClickDown}
             />
           ) : (
-            <MyButton onClickaAtion={handleClickUp} color="green">
+            <MyButton onClickAtion={handleClickUp} color="green">
               Купить
             </MyButton>
           )}
-          {/* <button onClick={handleClickUp}>купить</button> */}
         </div>
       </div>
     </div>

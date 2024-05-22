@@ -1,8 +1,8 @@
-import { Position } from './position';
+import { PositionCount } from './position';
 
 // export interface CartType [{
 //   item: Position[];
 //     count: number;
 // }]
 
-export type CartType = Position[];
+export type CartType = PositionCount[];
