@@ -4,7 +4,7 @@ import classes from './ChangeCount.module.scss';
 interface ChangeCountProps {
   count: number | undefined;
   onClickAtionUp: () => void;
-  onClickAtionDown: () => void;
+  onClickAtionDown?: () => void;
   color?: 'red' | 'green' | 'yellow';
 }
 

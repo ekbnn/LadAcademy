@@ -1,46 +1,95 @@
-import { FC, useState, Dispatch, SetStateAction } from 'react';
+//import { FC, useState, Dispatch, SetStateAction } from 'react';
+import { FC, useState } from 'react';
 import classes from './Product.module.scss';
 import { PositionCount } from '../../../types/position';
 import MyButton from './MyButton/MyButton';
 import ChangeCount from './ChangeCount/ChangeCount';
 import { CartType } from '../../../types/cart';
+import { Updater } from 'use-immer';
 
 interface PositionProps {
   position: PositionCount;
-  onSetCartProducts: Dispatch<SetStateAction<CartType>>;
-  cartProducts: CartType;
+  // onSetCartProducts: Dispatch<SetStateAction<CartType>>;
+  onSetCartProducts: Updater<CartType>;
+  cartProducts?: CartType;
 }
 
 const Product: FC<PositionProps> = (props) => {
   const { position, onSetCartProducts, cartProducts } = props;
 
-  //Увеличение товара в корзине
+  // //Увеличение товара в корзине useState
+  // let count = 0;
+  // const handleClickUp = () => {
+  //   onSetCartProducts((preState) => {
+  //     if (preState.items.find((el) => el.id == position.id)) {
+  //       preState.items.find((el) => {
+  //         if (el.id == position.id) {
+  //           count = el.count + 1;
+  //         }
+  //       });
+
+  //       return {
+  //         items: [
+  //           ...preState.items.filter((el) => el.id != position.id),
+  //           { ...position, count: count },
+  //         ],
+  //         totalPrice: totalPrice + position.price,
+  //       };
+  //     } else {
+  //       return {
+  //         items: [
+  //           ...preState.items,
+  //           { ...position, count: position.count + 1 },
+  //         ],
+  //         totalPrice: totalPrice + position.price,
+  //       };
+  //     }
+  //   });
+  // };
+
+  //Увеличение товара в корзине useImmer
   const handleClickUp = () => {
-    if (cartProducts.find((el) => el.id == position.id)) {
-      cartProducts.find((el) => {
-        if (el.id == position.id) {
-          el.count = el.count + 1;
-        }
-      });
-      onSetCartProducts([...cartProducts]);
-    } else {
-      onSetCartProducts([
-        ...cartProducts,
-        { ...position, count: position.count + 1 },
-      ]);
-    }
+    onSetCartProducts((preState) => {
+      if (preState.items.find((el) => el.id == position.id)) {
+        preState.items.find((el) => {
+          if (el.id == position.id) {
+            el.count++;
+          }
+        });
+      } else {
+        preState.items.push({ ...position, count: position.count + 1 });
+      }
+      preState.totalPrice = preState.totalPrice + position.price;
+    });
   };
 
-  //Уменьшение товара в корзине
+  // //Уменьшение товара в корзине useStaet
+  // const handleClickDown = () => {
+  //   if (items.find((el) => el.id == position.id)) {
+  //     items.find((el) => {
+  //       if (el.id == position.id) {
+  //         el.count = el.count - 1;
+  //       }
+  //     });
+  //     onSetCartProducts({
+  //       items: [...items],
+  //       totalPrice: totalPrice - position.price,
+  //     });
+  //   }
+  // };
+
+  //Уменьшение товара в корзине useImmer
   const handleClickDown = () => {
-    if (cartProducts.find((el) => el.id == position.id)) {
-      cartProducts.find((el) => {
-        if (el.id == position.id) {
-          el.count = el.count - 1;
-        }
-      });
-      onSetCartProducts([...cartProducts]);
-    }
+    onSetCartProducts((preState) => {
+      if (preState.items.find((el) => el.id == position.id)) {
+        preState.items.find((el) => {
+          if (el.id == position.id) {
+            el.count--;
+          }
+        });
+      }
+      preState.totalPrice = preState.totalPrice - position.price;
+    });
   };
 
   //Изменение избранного
@@ -48,6 +97,12 @@ const Product: FC<PositionProps> = (props) => {
   const handleLike = () => {
     setLike(!like);
   };
+
+  const discount = position.discount && (
+    <div className={classes.product__discount}>
+      -{position.discount?.value} %
+    </div>
+  );
 
   return (
     // Карточка товара
@@ -59,7 +114,7 @@ const Product: FC<PositionProps> = (props) => {
           src={position.imageUrl}
           alt="dissconnect"
         />
-        <div className={classes.product__discount}>-{position.discount} %</div>
+        {discount}
       </div>
       {/* Информация о товаре */}
       <div className={classes.product__property}>
@@ -98,9 +153,11 @@ const Product: FC<PositionProps> = (props) => {
         </div>
         {/* Кнопка покупки */}
         <div>
-          {cartProducts.find((el) => el.id == position.id)?.count ? (
+          {cartProducts?.items.find((el) => el.id == position.id)?.count ? (
             <ChangeCount
-              count={cartProducts.find((el) => el.id == position.id)?.count}
+              count={
+                cartProducts.items.find((el) => el.id == position.id)?.count
+              }
               onClickAtionUp={handleClickUp}
               onClickAtionDown={handleClickDown}
             />

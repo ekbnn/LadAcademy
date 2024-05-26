@@ -3,7 +3,10 @@ export interface Position {
   name: string;
   imageUrl: string;
   price: number;
-  discount: number;
+  discount?: {
+    type: 'persent' | 'fix';
+    value: number;
+  };
   rating: number;
   isFavorite: boolean;
 }

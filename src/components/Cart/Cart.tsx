@@ -1,27 +1,72 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+//import { Dispatch, FC, SetStateAction } from 'react';
+import { FC } from 'react';
 import { CartType } from '../../types/cart';
 import classes from './Cart.module.scss';
+import { Updater } from 'use-immer';
 
 interface CartProps {
   cartProducts: CartType;
-  onSetCartProducts: Dispatch<SetStateAction<CartType>>;
+  //onSetCartProducts: Dispatch<SetStateAction<CartType>>;
+  onSetCartProducts: Updater<CartType>;
 }
 
-const Cart: FC<CartProps> = ({ cartProducts, onSetCartProducts }) => {
-  //Увеличение товара в корзине
+const Cart: FC<CartProps> = ({
+  cartProducts: { items, totalPrice },
+  onSetCartProducts,
+}) => {
+  // //Увеличение товара в корзине useState
+  // const handleClickUp = (id: number) => {
+  //   items.map((el) => {
+  //     if (el.id == id) {
+  //       el.count = el.count + 1;
+  //       totalPrice = totalPrice + el.price;
+  //     }
+  //   });
+  //   onSetCartProducts((preState) => {
+  //     return { ...preState, items: [...items], totalPrice: totalPrice };
+  //   });
+  // };
+
+  //Увеличение товара в корзине useImmer
   const handleClickUp = (id: number) => {
-    cartProducts.map((el) => el.id == id && (el.count = el.count + 1));
-    onSetCartProducts([...cartProducts]);
+    onSetCartProducts((preState) => {
+      preState.items.map((el) => {
+        if (el.id == id) {
+          el.count++;
+          preState.totalPrice = preState.totalPrice + el.price;
+        }
+      });
+    });
   };
-  //Уменьшение товара в корзине
+
+  // //Уменьшение товара в корзине useState
+  // const handleClickDown = (id: number) => {
+  //   items.map((el) => {
+  //     if (el.id == id) {
+  //       el.count = el.count - 1;
+  //       totalPrice = totalPrice - el.price;
+  //     }
+  //   });
+  //   onSetCartProducts((preState) => {
+  //     return { ...preState, items: [...items], totalPrice: totalPrice };
+  //   });
+  // };
+
+  //Уменьшение товара в корзине useState
   const handleClickDown = (id: number) => {
-    cartProducts.map((el) => el.id == id && (el.count = el.count - 1));
-    onSetCartProducts([...cartProducts]);
+    onSetCartProducts((preState) => {
+      preState.items.map((el) => {
+        if (el.id == id) {
+          el.count--;
+          preState.totalPrice = preState.totalPrice - el.price;
+        }
+      });
+    });
   };
 
   //Итог корзина
   let summPrice = 0;
-  cartProducts.map(
+  items.map(
     (product) => (summPrice = summPrice + product.count * product.price),
   );
 
@@ -29,7 +74,7 @@ const Cart: FC<CartProps> = ({ cartProducts, onSetCartProducts }) => {
     <div>
       <h3>Корзина</h3>
 
-      {cartProducts.map((product) => {
+      {items.map((product) => {
         return (
           product.count > 0 && (
             <div key={product.id} className={classes.cart}>
@@ -43,9 +88,7 @@ const Cart: FC<CartProps> = ({ cartProducts, onSetCartProducts }) => {
                   >
                     +
                   </button>
-                  <span>
-                    {cartProducts.find((el) => el.id == product.id)?.count}
-                  </span>
+                  <span>{items.find((el) => el.id == product.id)?.count}</span>
                   <button
                     className={classes.cart__count__button}
                     onClick={() => handleClickDown(product.id)}
@@ -59,7 +102,8 @@ const Cart: FC<CartProps> = ({ cartProducts, onSetCartProducts }) => {
         );
       })}
 
-      <div>Итог: {summPrice} ₽</div>
+      {/* <div>Итог: {summPrice} ₽</div> */}
+      <div>Итог: {totalPrice} ₽</div>
     </div>
   );
 };
