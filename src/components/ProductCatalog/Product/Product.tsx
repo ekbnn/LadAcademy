@@ -1,11 +1,10 @@
 //import { FC, useState, Dispatch, SetStateAction } from 'react';
-import { FC, useState } from 'react';
-import classes from './Product.module.scss';
-import { PositionCount } from '../../../types/position';
-import MyButton from './MyButton/MyButton';
-import ChangeCount from './ChangeCount/ChangeCount';
-import { CartType } from '../../../types/cart';
+import { FC, useContext, useState } from 'react';
 import { Updater } from 'use-immer';
+import classes from './Product.module.scss';
+import { PositionCount, CartType } from '@/types';
+import { MyButton, ChangeCount } from '@/components';
+import { ThemeContext } from '@/Context';
 
 interface PositionProps {
   position: PositionCount;
@@ -16,6 +15,7 @@ interface PositionProps {
 
 const Product: FC<PositionProps> = (props) => {
   const { position, onSetCartProducts, cartProducts } = props;
+  const { theme } = useContext(ThemeContext);
 
   // //Увеличение товара в корзине useState
   // let count = 0;
@@ -107,6 +107,7 @@ const Product: FC<PositionProps> = (props) => {
   return (
     // Карточка товара
     <div className={classes.product}>
+      <div>Сейчас используем {theme}</div>
       {/* Изрбражение товара */}
       <div className={classes.product__top}>
         <img

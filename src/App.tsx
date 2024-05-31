@@ -1,11 +1,11 @@
-import Row from './components/Row/Row.tsx';
-import ProductCatalog from './components/ProductCatalog/ProductCatalog.tsx';
-import { Position } from './types/position.ts';
-import Cart from './components/Cart/Cart.tsx';
-import { CartType } from './types/cart.ts';
-import classes from './App.module.scss';
 //import { useState } from 'react';
 import { useImmer } from 'use-immer';
+import { Row, ProductCatalog, Cart } from '@/components';
+import { Position, CartType } from '@/types';
+import classes from '@/App.module.scss';
+//import TestComponent from './components/TestComponent/TestComponent';
+import TestComponentImmer from './components/TestComponent/TestComponentImmer';
+import ThemesChanger from './components/ThemesChanger/ThemesChanger';
 
 const positions: Position[] = [
   {
@@ -84,12 +84,16 @@ function App() {
 
   return (
     <div className={classes.all}>
+      <div>
+        <ThemesChanger />
+      </div>
       <Row>
         <ProductCatalog
           products={positions}
           cartProducts={cartProducts}
           onSetCartProducts={setCartProducts}
         />
+        <TestComponentImmer />
       </Row>
 
       <div>

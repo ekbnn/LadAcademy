@@ -1,9 +1,8 @@
 //import { FC, Dispatch, SetStateAction } from 'react';
 import { FC } from 'react';
-import Product from './Product/Product';
-import { Position } from '../../types/position';
-import { CartType } from '../../types/cart';
 import { Updater } from 'use-immer';
+import { Product } from '@/components';
+import { Position, CartType } from '@/types';
 
 interface ProductCatalogProps {
   products: Position[];
