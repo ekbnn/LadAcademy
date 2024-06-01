@@ -1,5 +1,6 @@
-export { CounterContext } from './Counter';
-export { CounterProvider } from './Counter';
-export { ThemeContext } from './Theme';
+export { CounterContext, CounterProvider } from './Counter';
+
+export { CartContext, CartProvider } from './Cart';
+
+export { ThemeContext, ThemeProvider } from './Theme';
 export type { ThemeVariable } from './Theme';
-export { ThemeProvider } from './Theme';

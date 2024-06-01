@@ -4,7 +4,7 @@ import { Row, ProductCatalog, Cart } from '@/components';
 import { Position, CartType } from '@/types';
 import classes from '@/App.module.scss';
 //import TestComponent from './components/TestComponent/TestComponent';
-import TestComponentImmer from './components/TestComponent/TestComponentImmer';
+//import TestComponentImmer from './components/TestComponent/TestComponentImmer';
 import ThemesChanger from './components/ThemesChanger/ThemesChanger';
 
 const positions: Position[] = [
@@ -93,7 +93,7 @@ function App() {
           cartProducts={cartProducts}
           onSetCartProducts={setCartProducts}
         />
-        <TestComponentImmer />
+        {/* <TestComponentImmer /> */}
       </Row>
 
       <div>

@@ -1,9 +1,62 @@
 //import { Dispatch, FC, SetStateAction } from 'react';
-import { FC } from 'react';
+import { ChangeEventHandler, FC, useContext, useState } from 'react';
 import { CartType } from '../../types/cart';
 import classes from './Cart.module.scss';
 import { Updater } from 'use-immer';
+import { CartContext, decrementCart, incrementCart } from '@/Context/Cart';
 
+// ///Пропишем для типов action перечесление чтоб далее не ошибится
+// enum ActionType {
+//   INCREMENT = 'increment',
+//   DECREMENT = 'decrement',
+// }
+// ///пропишим типы action
+// type CounterAction =
+//   | { type: ActionType.INCREMENT; payload: { id: number; count: number } }
+//   | { type: ActionType.DECREMENT; payload: { id: number; count: number } };
+
+// //описываем функцию reducer
+// const reducerCart: ImmerReducer<CartType, CounterAction> = (
+//   draftState,
+//   action,
+// ) => {
+//   switch (action.type) {
+//     case ActionType.INCREMENT:
+//       draftState.items.map((el) => {
+//         if (el.id == action.payload.id) {
+//           el.count += action.payload.count;
+//         }
+//       });
+//       break;
+//     case ActionType.DECREMENT:
+//       draftState.items.map((el) => {
+//         if (el.id == action.payload.id) {
+//           el.count -= action.payload.count;
+//         }
+//       });
+//       break;
+//     default:
+//       break;
+//   }
+// };
+
+// //вынесем начальное состояние в переменную
+// const initialStateCart: CartType = {
+//   items: [],
+//   totalPrice: 0,
+// };
+
+// //Создаем вспомогательные функции для формирования объекта и передачи в dispatch
+// const increment = (id: number, value: number) => ({
+//   type: ActionType.INCREMENT,
+//   payload: { id: id, count: value },
+// });
+// const decrement = (id: number, value: number) => ({
+//   type: ActionType.DECREMENT,
+//   payload: { id: id, count: value },
+// });
+
+//типизация пропса
 interface CartProps {
   cartProducts: CartType;
   //onSetCartProducts: Dispatch<SetStateAction<CartType>>;
@@ -14,59 +67,49 @@ const Cart: FC<CartProps> = ({
   cartProducts: { items, totalPrice },
   onSetCartProducts,
 }) => {
-  // //Увеличение товара в корзине useState
+  const [value, setValue] = useState<number>(0);
+  //const [state, dispatch] = useImmerReducer(reducerCart, initialStateCart);
+
+  const { cart, dispatch } = useContext(CartContext);
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) =>
+    setValue(+event.target.value);
+
+  const handleIncrementClick = (id: number) => {
+    dispatch(incrementCart(id, value));
+  };
+
+  const handleDecrementClick = (id: number) => {
+    dispatch(decrementCart(id, value));
+  };
+
+  // //Увеличение товара в корзине useImmer
   // const handleClickUp = (id: number) => {
-  //   items.map((el) => {
-  //     if (el.id == id) {
-  //       el.count = el.count + 1;
-  //       totalPrice = totalPrice + el.price;
-  //     }
-  //   });
   //   onSetCartProducts((preState) => {
-  //     return { ...preState, items: [...items], totalPrice: totalPrice };
+  //     preState.items.map((el) => {
+  //       if (el.id == id) {
+  //         el.count++;
+  //         preState.totalPrice = preState.totalPrice + el.price;
+  //       }
+  //     });
   //   });
   // };
-
-  //Увеличение товара в корзине useImmer
-  const handleClickUp = (id: number) => {
-    onSetCartProducts((preState) => {
-      preState.items.map((el) => {
-        if (el.id == id) {
-          el.count++;
-          preState.totalPrice = preState.totalPrice + el.price;
-        }
-      });
-    });
-  };
 
   // //Уменьшение товара в корзине useState
   // const handleClickDown = (id: number) => {
-  //   items.map((el) => {
-  //     if (el.id == id) {
-  //       el.count = el.count - 1;
-  //       totalPrice = totalPrice - el.price;
-  //     }
-  //   });
   //   onSetCartProducts((preState) => {
-  //     return { ...preState, items: [...items], totalPrice: totalPrice };
+  //     preState.items.map((el) => {
+  //       if (el.id == id) {
+  //         el.count--;
+  //         preState.totalPrice = preState.totalPrice - el.price;
+  //       }
+  //     });
   //   });
   // };
 
-  //Уменьшение товара в корзине useState
-  const handleClickDown = (id: number) => {
-    onSetCartProducts((preState) => {
-      preState.items.map((el) => {
-        if (el.id == id) {
-          el.count--;
-          preState.totalPrice = preState.totalPrice - el.price;
-        }
-      });
-    });
-  };
-
   //Итог корзина
   let summPrice = 0;
-  items.map(
+  cart.items.map(
     (product) => (summPrice = summPrice + product.count * product.price),
   );
 
@@ -74,7 +117,7 @@ const Cart: FC<CartProps> = ({
     <div>
       <h3>Корзина</h3>
 
-      {items.map((product) => {
+      {cart.items.map((product) => {
         return (
           product.count > 0 && (
             <div key={product.id} className={classes.cart}>
@@ -84,14 +127,18 @@ const Cart: FC<CartProps> = ({
                 <div className={classes.cart__count}>
                   <button
                     className={classes.cart__count__button}
-                    onClick={() => handleClickUp(product.id)}
+                    onClick={() => handleIncrementClick(product.id)}
                   >
                     +
                   </button>
-                  <span>{items.find((el) => el.id == product.id)?.count}</span>
+                  <input type="number" onChange={handleChange} />
+
+                  <span>
+                    {cart.items.find((el) => el.id == product.id)?.count}
+                  </span>
                   <button
                     className={classes.cart__count__button}
-                    onClick={() => handleClickDown(product.id)}
+                    onClick={() => handleDecrementClick(product.id)}
                   >
                     -
                   </button>

@@ -2,9 +2,16 @@
 import { FC, useContext, useState } from 'react';
 import { Updater } from 'use-immer';
 import classes from './Product.module.scss';
-import { PositionCount, CartType } from '@/types';
-import { MyButton, ChangeCount } from '@/components';
-import { ThemeContext } from '@/Context';
+import { CartType, PositionCount } from '@/types';
+import {
+  CartContext,
+  addItem,
+  decrementCart,
+  incrementCart,
+  debuggger 
+} from '@/Context/Cart';
+import ChangeCount from './ChangeCount/ChangeCount';
+import MyButton from './MyButton/MyButton';
 
 interface PositionProps {
   position: PositionCount;
@@ -14,8 +21,30 @@ interface PositionProps {
 }
 
 const Product: FC<PositionProps> = (props) => {
-  const { position, onSetCartProducts, cartProducts } = props;
-  const { theme } = useContext(ThemeContext);
+  const { position } = props;
+  // const { theme } = useContext(ThemeContext);
+
+  // const [value, setValue] = useState<number>(0);
+  // const [state, dispatch] = useImmerReducer(reducerCart, initialStateCart);
+  //console.log(state);
+
+  // const handleChange: ChangeEventHandler<HTMLInputElement> = (event) =>
+  //   setValue(+event.target.value);
+
+  const { cart, dispatch } = useContext(CartContext);
+
+  const handleAddItem = () => {
+    dispatch(addItem(position));
+  };
+
+  const handleIncrementClick = () => {
+    dispatch(incrementCart(position.id, 1));
+  };
+  console.log(incrementCart(position.id, 1));
+
+  const handleDecrementClick = () => {
+    dispatch(decrementCart(position.id, 1));
+  };
 
   // //Увеличение товара в корзине useState
   // let count = 0;
@@ -47,21 +76,21 @@ const Product: FC<PositionProps> = (props) => {
   //   });
   // };
 
-  //Увеличение товара в корзине useImmer
-  const handleClickUp = () => {
-    onSetCartProducts((preState) => {
-      if (preState.items.find((el) => el.id == position.id)) {
-        preState.items.find((el) => {
-          if (el.id == position.id) {
-            el.count++;
-          }
-        });
-      } else {
-        preState.items.push({ ...position, count: position.count + 1 });
-      }
-      preState.totalPrice = preState.totalPrice + position.price;
-    });
-  };
+  // //Увеличение товара в корзине useImmer
+  // const handleClickUp = () => {
+  //   onSetCartProducts((preState) => {
+  //     if (preState.items.find((el) => el.id == position.id)) {
+  //       preState.items.find((el) => {
+  //         if (el.id == position.id) {
+  //           el.count++;
+  //         }
+  //       });
+  //     } else {
+  //       preState.items.push({ ...position, count: position.count + 1 });
+  //     }
+  //     preState.totalPrice = preState.totalPrice + position.price;
+  //   });
+  // };
 
   // //Уменьшение товара в корзине useStaet
   // const handleClickDown = () => {
@@ -78,19 +107,19 @@ const Product: FC<PositionProps> = (props) => {
   //   }
   // };
 
-  //Уменьшение товара в корзине useImmer
-  const handleClickDown = () => {
-    onSetCartProducts((preState) => {
-      if (preState.items.find((el) => el.id == position.id)) {
-        preState.items.find((el) => {
-          if (el.id == position.id) {
-            el.count--;
-          }
-        });
-      }
-      preState.totalPrice = preState.totalPrice - position.price;
-    });
-  };
+  // //Уменьшение товара в корзине useImmer
+  // const handleClickDown = () => {
+  //   onSetCartProducts((preState) => {
+  //     if (preState.items.find((el) => el.id == position.id)) {
+  //       preState.items.find((el) => {
+  //         if (el.id == position.id) {
+  //           el.count--;
+  //         }
+  //       });
+  //     }
+  //     preState.totalPrice = preState.totalPrice - position.price;
+  //   });
+  // };
 
   //Изменение избранного
   const [like, setLike] = useState(false);
@@ -107,7 +136,7 @@ const Product: FC<PositionProps> = (props) => {
   return (
     // Карточка товара
     <div className={classes.product}>
-      <div>Сейчас используем {theme}</div>
+      {/* <div>Сейчас используем {theme}</div> */}
       {/* Изрбражение товара */}
       <div className={classes.product__top}>
         <img
@@ -154,16 +183,14 @@ const Product: FC<PositionProps> = (props) => {
         </div>
         {/* Кнопка покупки */}
         <div>
-          {cartProducts?.items.find((el) => el.id == position.id)?.count ? (
+          {cart?.items.find((el) => el.id == position.id)?.count ? (
             <ChangeCount
-              count={
-                cartProducts.items.find((el) => el.id == position.id)?.count
-              }
-              onClickAtionUp={handleClickUp}
-              onClickAtionDown={handleClickDown}
+              count={cart.items.find((el) => el.id == position.id)?.count}
+              onClickAtionUp={handleIncrementClick}
+              onClickAtionDown={handleDecrementClick}
             />
           ) : (
-            <MyButton onClickAtion={handleClickUp} color="green">
+            <MyButton onClickAtion={handleAddItem} color="green">
               Купить
             </MyButton>
           )}

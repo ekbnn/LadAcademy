@@ -1,7 +1,7 @@
 import { ChangeEventHandler, Reducer, useReducer, useState } from 'react';
 
 // описываем типы Reducer
-///пропишем интерфейс нашщего сорстояния
+///пропишем интерфейс нашего сорстояния
 interface CounterType {
   count: number;
 }
