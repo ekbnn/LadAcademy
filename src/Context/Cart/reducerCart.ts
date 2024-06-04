@@ -7,28 +7,38 @@ export const reducerCart: ImmerReducer<CartType, CartAction> = (
   action,
 ) => {
   switch (action.type) {
+    /// case добавление первого элемента
     case ActionType.ADDITEM:
-      draftState.items.push({
-        ...action.payload.item,
-        count: action.payload.item.count + 1,
-      });
-      break;
-    case ActionType.INCREMENT:
-      if (draftState.items.find((el) => el.id == action.payload.id)) {
-        draftState.items.find((el) => {
-          if (el.id == action.payload.id) {
-            el.count += action.payload.count;
-          }
+      if (!draftState.items.find((el) => el.id == action.payload.item.id)) {
+        draftState.items.push({
+          ...action.payload.item,
+          count: action.payload.item.count + 1,
         });
+        draftState.totalPrice += action.payload.item.price;
       }
       break;
-    case ActionType.DECREMENT:
+
+    /// case изменение count
+    case ActionType.SET:
       draftState.items.map((el) => {
         if (el.id == action.payload.id) {
-          el.count -= action.payload.count;
+          el.count = action.payload.count;
         }
       });
+
+      if (action.payload.count < 1) {
+        draftState.items = draftState.items.filter(
+          (el) => el.id != action.payload.id,
+        );
+      }
+      /// Итог корзины
+      draftState.totalPrice = 0;
+      draftState.items.map(
+        (el) =>
+          (draftState.totalPrice = draftState.totalPrice + el.count * el.price),
+      );
       break;
+
     default:
       break;
   }

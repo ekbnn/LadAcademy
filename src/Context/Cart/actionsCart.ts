@@ -1,20 +1,14 @@
 import { PositionCount } from '@/types';
-import { ActionType } from './typesCart';
+import { ActionType, CartAction } from './typesCart';
 
-export const incrementCart = (id: number, value: number) => {
-  return {
-    type: ActionType.INCREMENT,
-    payload: { id: id, count: value },
-  };
-};
-export const decrementCart = (id: number, value: number) => {
-  return {
-    type: ActionType.DECREMENT,
-    payload: { id: id, count: value },
-  };
-};
-
-export const addItem = (item: PositionCount) => ({
+export const addItem = (item: PositionCount): CartAction => ({
   type: ActionType.ADDITEM,
   payload: { item },
 });
+
+export const setCountCart = (id: number, value: number): CartAction => {
+  return {
+    type: ActionType.SET,
+    payload: { id: id, count: value },
+  };
+};

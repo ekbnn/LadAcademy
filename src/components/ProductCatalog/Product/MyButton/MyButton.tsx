@@ -2,13 +2,13 @@ import { FC, ReactNode } from 'react';
 import classes from './MyButton.module.scss';
 
 interface MyButtonProps {
-  onClickAtion: () => void;
+  onClickAction: () => void;
   children: ReactNode;
   color?: 'red' | 'green' | 'yellow';
 }
 
 const MyButton: FC<MyButtonProps> = (props) => {
-  const { onClickAtion, children, color } = props;
+  const { onClickAction, children, color } = props;
   const { button__yellow, button__green, button__red } = classes;
   const colorButton =
     color == 'red'
@@ -19,7 +19,7 @@ const MyButton: FC<MyButtonProps> = (props) => {
   return (
     <button
       className={`${classes.button} ${colorButton}`}
-      onClick={onClickAtion}
+      onClick={onClickAction}
     >
       {children}
     </button>

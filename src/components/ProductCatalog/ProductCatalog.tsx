@@ -1,4 +1,3 @@
-//import { FC, Dispatch, SetStateAction } from 'react';
 import { FC } from 'react';
 import { Updater } from 'use-immer';
 import { Product } from '@/components';
@@ -7,7 +6,6 @@ import { Position, CartType } from '@/types';
 interface ProductCatalogProps {
   products: Position[];
   cartProducts: CartType;
-  //onSetCartProducts: Dispatch<SetStateAction<CartType>>;
   onSetCartProducts: Updater<CartType>;
 }
 

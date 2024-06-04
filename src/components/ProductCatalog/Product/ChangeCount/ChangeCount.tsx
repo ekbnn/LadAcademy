@@ -3,13 +3,13 @@ import classes from './ChangeCount.module.scss';
 
 interface ChangeCountProps {
   count: number | undefined;
-  onClickAtionUp: () => void;
-  onClickAtionDown?: () => void;
+  onClickActionUp: () => void;
+  onClickActionDown?: () => void;
   color?: 'red' | 'green' | 'yellow';
 }
 
 const ChangeCount: FC<ChangeCountProps> = (props) => {
-  const { count, onClickAtionUp, onClickAtionDown, color } = props;
+  const { count, onClickActionUp, onClickActionDown, color } = props;
   const { buttonCount__yellow, buttonCount__green, buttonCount__red } = classes;
   const colorButton =
     color == 'red'
@@ -21,16 +21,16 @@ const ChangeCount: FC<ChangeCountProps> = (props) => {
     <div className={`${classes.buttonCount} ${colorButton}`}>
       <button
         className={`${classes.buttonUpDown} ${colorButton}`}
-        onClick={onClickAtionUp}
+        onClick={onClickActionDown}
       >
-        +
+        -
       </button>
       <span>{count}</span>
       <button
         className={`${classes.buttonUpDown} ${colorButton}`}
-        onClick={onClickAtionDown}
+        onClick={onClickActionUp}
       >
-        -
+        +
       </button>
     </div>
   );

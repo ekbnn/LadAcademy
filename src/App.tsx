@@ -1,10 +1,7 @@
-//import { useState } from 'react';
 import { useImmer } from 'use-immer';
 import { Row, ProductCatalog, Cart } from '@/components';
 import { Position, CartType } from '@/types';
 import classes from '@/App.module.scss';
-//import TestComponent from './components/TestComponent/TestComponent';
-//import TestComponentImmer from './components/TestComponent/TestComponentImmer';
 import ThemesChanger from './components/ThemesChanger/ThemesChanger';
 
 const positions: Position[] = [
@@ -76,28 +73,28 @@ const positions: Position[] = [
 ];
 
 function App() {
-  //const [cartProducts, setCartProducts] = useState<CartType>({
   const [cartProducts, setCartProducts] = useImmer<CartType>({
     items: [],
     totalPrice: 0,
   });
 
   return (
-    <div className={classes.all}>
+    <div>
       <div>
         <ThemesChanger />
       </div>
-      <Row>
-        <ProductCatalog
-          products={positions}
-          cartProducts={cartProducts}
-          onSetCartProducts={setCartProducts}
-        />
-        {/* <TestComponentImmer /> */}
-      </Row>
+      <div className={classes.all}>
+        <Row>
+          <ProductCatalog
+            products={positions}
+            cartProducts={cartProducts}
+            onSetCartProducts={setCartProducts}
+          />
+        </Row>
 
-      <div>
-        <Cart cartProducts={cartProducts} onSetCartProducts={setCartProducts} />
+        <div>
+          <Cart />
+        </div>
       </div>
     </div>
   );

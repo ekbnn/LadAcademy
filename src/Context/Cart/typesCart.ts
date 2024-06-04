@@ -7,17 +7,13 @@ export interface CartType {
 
 ///Пропишем для типов action перечесление чтоб далее не ошибится
 export enum ActionType {
-  INCREMENT = 'increment',
-  DECREMENT = 'decrement',
-  DELLALL = 'dellall',
-  DELLITEM = 'dellitem',
   ADDITEM = 'additem',
+  SET = 'set',
 }
 
 //export type ActionType = 'increment' | 'decrement' | 'additem';
 
 ///пропишим типы action
 export type CartAction =
-  | { type: ActionType.INCREMENT; payload: { id: number; count: number } }
-  | { type: ActionType.DECREMENT; payload: { id: number; count: number } }
-  | { type: ActionType.ADDITEM; payload: { item: PositionCount } };
+  | { type: ActionType.ADDITEM; payload: { item: PositionCount } }
+  | { type: ActionType.SET; payload: { id: number; count: number } };

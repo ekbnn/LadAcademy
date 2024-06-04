@@ -1,11 +1,13 @@
 .cart {
   display: flex;
   flex-direction: column;
+  width: 380px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   transition: 0.2s;
   padding: 5px;
   margin-bottom: 5%;
+  margin-top: 5%;
 
   &__name {
     display: block;
@@ -52,6 +54,16 @@
       color: #70c05b;
       border: 1px solid #70c05b;
     }
+  }
+
+  &__input {
+    width: 40px;
+    text-align: center;
+  }
+  &__deleteItem{
+    cursor: pointer;
+    text-align: center;
+    width: 15px;
   }
 
   &__button {
