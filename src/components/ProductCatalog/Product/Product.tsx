@@ -1,15 +1,12 @@
 import { FC, useContext, useState } from 'react';
-import { Updater } from 'use-immer';
 import classes from './Product.module.scss';
-import { CartType, PositionCount } from '@/types';
+import { PositionCount } from '@/types';
 import { CartContext, addItem, setCountCart } from '@/Context/Cart';
 import ChangeCount from './ChangeCount/ChangeCount';
 import MyButton from './MyButton/MyButton';
 
 interface PositionProps {
   position: PositionCount;
-  onSetCartProducts: Updater<CartType>;
-  cartProducts?: CartType;
 }
 
 const Product: FC<PositionProps> = (props) => {

@@ -25,13 +25,13 @@ export const reducerCart: ImmerReducer<CartType, CartAction> = (
           el.count = action.payload.count;
         }
       });
-
+      // Удаление элемента из корзины если count=0
       if (action.payload.count < 1) {
         draftState.items = draftState.items.filter(
           (el) => el.id != action.payload.id,
         );
       }
-      /// Итог корзины
+      // Итог корзины
       draftState.totalPrice = 0;
       draftState.items.map(
         (el) =>

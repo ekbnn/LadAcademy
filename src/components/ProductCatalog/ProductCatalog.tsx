@@ -1,29 +1,28 @@
 import { FC } from 'react';
-import { Updater } from 'use-immer';
 import { Product } from '@/components';
-import { Position, CartType } from '@/types';
+import { getProducts } from '@/servises';
+import { useQuery } from '@tanstack/react-query';
 
-interface ProductCatalogProps {
-  products: Position[];
-  cartProducts: CartType;
-  onSetCartProducts: Updater<CartType>;
-}
+const ProductCatalog: FC = () => {
+  const { data: positions, isLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: getProducts,
+  });
 
-const ProductCatalog: FC<ProductCatalogProps> = ({
-  products,
-  onSetCartProducts,
-  cartProducts,
-}) => {
+  if (isLoading) {
+    return (
+      <div>
+        <span>Загрузка</span>
+      </div>
+    );
+  }
+
   return (
     <>
-      {products.map((product) => (
-        <Product
-          key={product.id}
-          position={{ ...product, count: 0 }}
-          onSetCartProducts={onSetCartProducts}
-          cartProducts={cartProducts}
-        />
+      {positions.map((product) => (
+        <Product key={product.id} position={{ ...product, count: 0 }} />
       ))}
+      <span>test</span>
     </>
   );
 };
