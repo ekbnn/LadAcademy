@@ -1,5 +1,5 @@
 export interface Position {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
   price: number;
@@ -7,9 +7,14 @@ export interface Position {
     type: 'persent' | 'fix';
     value: number;
   };
-  rating: number;
-  isFavorite: boolean;
+  rating?: number;
+  isFavorite?: boolean;
 }
+
+export type ProductStoreRequest = Omit<
+  Position,
+  'id' | 'discount' | 'rating' | 'isFavorite'
+>;
 
 // export type PositionType = {
 //   id: number;
@@ -23,4 +28,14 @@ export interface Position {
 
 export interface PositionCount extends Position {
   count: number;
+}
+
+export interface ProductResponse {
+  first: number;
+  prev: number | null;
+  next: number | null;
+  last: number;
+  pages: number;
+  items: number;
+  products: Position[];
 }

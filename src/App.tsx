@@ -1,25 +1,19 @@
-// import { useImmer } from 'use-immer';
-import { Row, ProductCatalog, Cart } from '@/components';
-// import { CartType } from '@/types';
+import { ProductCatalog, Cart } from '@/components';
 import classes from '@/App.module.scss';
 import ThemesChanger from './components/ThemesChanger/ThemesChanger';
+import CreateProduct from './components/CreateProduct/CreateProduct';
 
 function App() {
-  // const [cartProducts, setCartProducts] = useImmer<CartType>({
-  //   items: [],
-  //   totalPrice: 0,
-  // });
-
   return (
     <div>
+      <div>
+        <CreateProduct />
+      </div>
       <div>
         <ThemesChanger />
       </div>
       <div className={classes.all}>
-        <Row>
-          <ProductCatalog />
-        </Row>
-
+        <ProductCatalog />
         <div>
           <Cart />
         </div>

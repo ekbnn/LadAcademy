@@ -1,0 +1,31 @@
+.active {
+    background-color: #ff6633;
+}
+.mute{
+    background-color: gray
+}
+ul {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    padding: 3px;
+}
+
+
+li {
+    display: inline-block;
+
+    gap: 15px;
+    margin-right: 5px;
+    color: #70c05b;
+    border: 1px solid #70c05b;
+    padding: 3px;
+
+    &:hover {
+        border: 1px solid #ff6633;
+        background-color: #ff6633;
+        color: #fff;
+    }
+}
